@@ -8,7 +8,15 @@ from .models import Category
 from .models import Products
 from .models import Post
 from .models import Comment
+from .models import Posts
+from .models import Comments
+from .models import Likes
+from .models import Follow
 
+admin.site.register(Follow)
+admin.site.register(Likes)
+admin.site.register(Comments)
+admin.site.register(Posts)
 admin.site.register(Comment)
 admin.site.register(Post)
 admin.site.register(Products)

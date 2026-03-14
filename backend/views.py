@@ -27,6 +27,9 @@ from .serializer import category_serilizer,products_serilizer
 from .models import Post,Comment
 from .serializer import Comment_serilizer,Post_serilizer
 
+from .models import Posts,Comments,Likes,Follow
+from .serializer import comments_serilizer,posts_serilizer,likes_serilizer,follow_serilizer
+
 
   
 # ______________________ Student Managment API___________________
@@ -116,3 +119,46 @@ class comment_view(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+# _________________________ Social Media API ________________________________
+class Postslistview(generics.ListCreateAPIView):
+    queryset=Posts.objects.all().order_by('-created_at')
+    serializer_class=posts_serilizer
+    authentication_classes=[JWTAuthentication,SessionAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+class Postsdetailview(generics.RetrieveUpdateDestroyAPIView):
+    queryset=Posts.objects.all()
+    serializer_class=posts_serilizer
+    authentication_classes=[JWTAuthentication,SessionAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+class commentlistview(generics.ListCreateAPIView):
+    queryset=Comments.objects.all()
+    serializer_class=comments_serilizer
+    authentication_classes=[JWTAuthentication,SessionAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class likelistview(generics.ListCreateAPIView):
+    queryset=Likes.objects.all()
+    serializer_class=likes_serilizer
+    authentication_classes=[JWTAuthentication,SessionAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class followlistview(generics.ListCreateAPIView):
+    queryset=Follow.objects.all()
+    serializer_class=follow_serilizer
+    authentication_classes=[JWTAuthentication,SessionAuthentication]
+    permission_classes=[permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(follower=self.request.user)
